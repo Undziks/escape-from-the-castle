@@ -1,3 +1,5 @@
+import random
+
 def showInstructions():
   #print a main menu and the commands
   print('''RPG GAME
@@ -22,6 +24,10 @@ def showStatus():
   #print the current inventory
   print('Inventory : ' + str(inventory))
   #print an item if there is one
+  if 'Meeting Place' in currentRoom:
+      x, y = random.randrange(1,12), random.randrange(1,12)
+      print("Mathematic challenge!", x, "*", y)
+      #multi = input(x, "*", y, "=?")
   directions = list(rooms[currentRoom].keys())
   if "item" in rooms[currentRoom]:
     print('You see a ' + rooms[currentRoom]['item'])
@@ -42,7 +48,8 @@ rooms = {
 
             'Empty Room' : {
                   'north' : 'Gate',
-                  'east' : 'Living Room'
+                  'east' : 'Living Room',
+                  'south' : 'Kings Chamber'
                 },
             
             'Meeting Place' : {
@@ -56,19 +63,22 @@ rooms = {
                 'west' : 'Empty Room',
                 'north' : 'Meeting Place',
                 'item' : 'knife',
-                'east' : 'Square'
+                'east' : 'Square',
+                'south' : 'Queens Chamber'
                 },
             
             'Knight Room' : {
                 'west' : 'Meeting Place',
                 'south' : 'Square',
-                'item' : 'key'
+                'item' : 'key',
+                'east' : 'Toilet'
                 },
             
             'Square' : {
                 'west' : 'Living Room',
                 'north' : 'Knight Room',
-                'item' : 'monster'
+                'item' : 'monster',
+                'south' : 'Magicjan Room'
                 #'item' : 'Axolotl in Russian tank'
                 },
             
@@ -78,7 +88,21 @@ rooms = {
                 'east' : 'Queens Chamber',
                 'item' : 'monster'
                 },
-
+            
+            'Queens Chamber' : {
+                'north' : 'Living Room',
+                'west' : 'Kings Chamber',
+                'east' : 'Magicjan Room',
+                'south' : 'Stable',
+                'item' : 'key'
+                },
+            'Magicjan Room' : {
+                'north' : 'Sqare',
+                'east' : 'Dining Room',
+                'south' : 'Stable',
+                'west' : 'Queens Chamber',
+                'item' : 'monster'
+                }
          }
 
 #start the player in the Gate
@@ -133,6 +157,7 @@ while True:
       inventory.remove('gun')
       #i = inventory.index('gun')
       #del inventory[i]
+      
       
   if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
       if 'cat' in inventory:
