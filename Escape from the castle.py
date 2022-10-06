@@ -9,7 +9,7 @@ But before this you must find keys and avoid strange monsters.
 You can go north, south, east and west.
 --------------------------------------------------------------
 ''')   
-
+                    
   print('''========
 Commands:
   go [direction]
@@ -19,24 +19,32 @@ Commands:
 
 def showStatus():
   #print the player's current status
+  global end_game 
   print('---------------------------')
   print('You are in the ' + currentRoom)
   #print the current inventory
   print('Inventory : ' + str(inventory))
   #print an item if there is one
-  if 'Meeting Place' in currentRoom:
-      x, y = random.randrange(1,12), random.randrange(1,12)
-      print("Mathematic challenge!", x, "*", y)
-      #multi = input(x, "*", y, "=?")
   directions = list(rooms[currentRoom].keys())
   if "item" in rooms[currentRoom]:
     print('You see a ' + rooms[currentRoom]['item'])
     directions.remove('item')
   print("You can go to:", directions)
   print("---------------------------")
+  if 'Meeting Place' in currentRoom:
+      x, y = random.randrange(1,12), random.randrange(1,12)
+      print("Mathematic challenge!", x, "*", y)
+      multi = input(">")
+      if int(multi) != int(x * y):
+          end_game = True
+      else:
+          print("Good answer, keep playing!")
+
 
 #an inventory, which is initially empty
 inventory = []
+
+end_game = False
 
 #a dictionary linking a room to other rooms
 rooms = {
@@ -114,6 +122,10 @@ showInstructions()
 while True:
 
   showStatus()
+  
+  if end_game:
+    print("Wrong answer! GAME OVER!")
+    break
 
   move = ''
   while move == '':  
@@ -155,9 +167,6 @@ while True:
       i = inventory.index('cat')
       inventory = inventory[:i]+['cat soldier']+inventory[i+1:]
       inventory.remove('gun')
-      #i = inventory.index('gun')
-      #del inventory[i]
-      
       
   if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
       if 'cat' in inventory:
